@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+    <title>Dashboard</title>
+</head>
+<body> 
+    <div class="container">
+      <h3 class="m-4">Welcome {{user.firstname}}</h3>
+      <a href="/add">Add a Job</a> 
+      <a href="/logout">Logout</a> 
+    
+      <form action="/jobs/{{job.id}}/create_job" method="post">  
+        {% csrf_token %}
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Job</th>
+              <th scope="col">Location</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for jobs in job %}
+            <tr>
+              <td>{{jobs.title}}</td>
+              <td>{{jobs.location}} </td>
+              <td><a href="/viewjob/{{jobs.id}}">view</a> 
+              <td><a href="/add">add</a></td>
+              {% if jobs.created_by.email == request.session.email%}
+              <td><a href="/job/view">edit</a></td> 
+              <td><a href="/delete/{{jobs.id}}">delete</a></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+       
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">My Jobs</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{jobs.title}}</td>
+              <td>{{jobs.location}}</td>
+              <td><a href="/viewjob">view</a> <a href="/index">done</a> </td>
+            </tr>
+          </tbody>
+        </table>
+      </form>  
+    </div>  
+</body>
+</html> 
+            
